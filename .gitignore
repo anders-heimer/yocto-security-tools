@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Extra plugins (symlinked from private repo)
+extra/*.py
+!extra/README.md
+
+# Runtime data
+data/
+.cve_agent/
+cve-metadata.json
+*.ndjson
+
+# Cache files
+*.json.gz
+
+# OS
+.DS_Store
+Thumbs.db

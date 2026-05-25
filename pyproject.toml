@@ -1,0 +1,81 @@
+[project]
+name = "yocto-security-tools"
+version = "1.0.0"
+description = "Standalone CVE management tools for Yocto/OpenEmbedded"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Build Tools",
+]
+dependencies = [
+    "requests>=2.28,<3",
+    "packaging>=23.0,<27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0,<10",
+    "pytest-cov>=4.0,<8",
+    "mypy>=1.8,<3",
+    "ruff>=0.4,<1",
+]
+
+[project.urls]
+Homepage = "https://github.com/Ericsson/yocto-security-tools"
+Repository = "https://github.com/Ericsson/yocto-security-tools"
+Issues = "https://github.com/Ericsson/yocto-security-tools/issues"
+Changelog = "https://github.com/Ericsson/yocto-security-tools/blob/main/CHANGELOG.md"
+
+[project.scripts]
+cve-agent = "cve_agent.__main__:main"
+cve-corrector = "cve_corrector.__main__:main"
+cve-metadata-extractor = "cve_metadata_extractor.__main__:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+markers = [
+    "integration: tests that create git repos or require external resources",
+]
+
+[tool.coverage.run]
+source = ["cve_agent", "cve_corrector", "cve_metadata_extractor", "shared"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+fail_under = 75
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["cve_agent*", "cve_corrector*", "cve_metadata_extractor*", "shared*"]
+
+[tool.setuptools.package-data]
+cve_metadata_extractor = ["config.json"]
+cve_agent = ["AGENT_INSTRUCTIONS.md"]
