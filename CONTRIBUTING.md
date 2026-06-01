@@ -1,0 +1,142 @@
+<!-- SPDX-License-Identifier: MIT -->
+# Contributing
+
+## Development Setup
+
+```bash
+git clone https://github.com/Ericsson/yocto-security-tools.git
+cd yocto-security-tools
+python3 -m venv venv
+source venv/bin/activate
+pip install -e ".[dev]"
+pre-commit install  # optional: enables ruff + mypy on commit
+```
+
+## Running Tests
+
+```bash
+pytest                              # all tests
+pytest tests/corrector/ -v          # specific component
+pytest -m "not integration"         # skip integration tests
+pytest --cov --cov-report=term      # with coverage
+```
+
+## Code Quality
+
+```bash
+ruff check .                        # lint
+ruff check --fix .                  # auto-fix
+mypy cve_agent cve_corrector cve_metadata_extractor shared
+```
+
+## Project Structure
+
+```
+├── shared/                  # Shared utilities (leaf module, no upward deps)
+├── cve_metadata_extractor/  # Tool 1: find fix commits
+├── cve_corrector/           # Tool 2: apply patches via devtool
+├── cve_agent/               # Tool 3: AI-assisted conflict resolution
+├── extra/                   # Plugin directory (private, .gitignore'd)
+└── tests/                   # Mirrors source package structure
+```
+
+## Adding a New CVE Source
+
+1. Create a file in `extra/` (for private sources) or in `cve_metadata_extractor/` (for upstream)
+2. Subclass `CveSource` from `cve_metadata_extractor.sources`
+3. Implement `extract()`, `is_enabled()`, and optionally `setup()`, `enrich()`
+4. Append an instance to `SOURCE_REGISTRY`
+
+See [extra/README.md](extra/README.md) for a complete example.
+
+## Adding a New AI Backend
+
+1. Create a file in `extra/`
+2. Subclass `AIBackend` from `cve_agent.backend`
+3. Implement `run_session()` and `is_available()`
+4. Call `register_backend(YourBackend())`
+
+## Commit Messages
+
+Use conventional format:
+```
+component: short description
+
+Longer explanation if needed.
+
+Signed-off-by: Your Name <email>
+```
+
+Components: `extractor`, `corrector`, `agent`, `shared`, `tests`, `docs`
+
+## Pull Requests
+
+- One logical change per PR
+- Tests required for new functionality
+- **Bug fixes must include a pytest that reproduces the bug and verifies the fix**
+- All existing tests must pass
+- No internal/proprietary references
+
+## Dependencies
+
+This project intentionally keeps external dependencies minimal (only `requests`
+and `packaging` at runtime). Before adding a new dependency:
+
+- Check if the standard library already provides the functionality
+- Prefer vendoring small utilities over adding a PyPI package
+- New runtime dependencies require maintainer approval
+- Use bounded version ranges in `pyproject.toml` to avoid supply-chain risk
+
+## AI Context Files
+
+The `.agents/summary/` directory contains structured context files that help AI
+assistants understand the codebase. When making significant changes, update the
+relevant summary file:
+
+- `architecture.md` — package layout and dependency rules
+- `components.md` — per-package descriptions and key classes
+- `data_models.md` — dataclasses, enums, and serialization formats
+- `interfaces.md` — plugin interfaces and registration patterns
+- `workflows.md` — end-to-end processing pipelines
+- `dependencies.md` — external dependencies and version constraints
+- `review_notes.md` — known issues and improvement areas
+
+These files are not consumed at runtime — they exist solely to provide AI
+assistants with accurate, up-to-date context about the project.
+
+## License
+
+All contributions are licensed under MIT. By submitting a PR, you agree that
+your contribution is licensed under the project's MIT license.
+
+Copyright remains with Ericsson AB.
+
+## Acceptance of AI Generated Code
+
+This project follows the guidance of the Linux Foundation regarding the use of
+generative AI tools. See:
+https://www.linuxfoundation.org/legal/generative-ai
+
+All existing guidelines in this document are expected to be followed when
+contributing AI-generated changes, with these additional requirements:
+
+All AI Generated Code must be labeled as such in the commit message, prior to
+your `Signed-off-by` line. It is also strongly recommended that any patches or
+code within the commit have a comment or other indication that this code was AI
+generated.
+
+Example commit message:
+
+```
+component: Add the ability to ...
+
+AI-Generated: Uses GitHub Copilot
+
+Signed-off-by: Your Name <your.name@domain>
+```
+
+The `Signed-off-by` line must be written by you, and not the AI helper. As a
+reminder, when contributing a change, your `Signed-off-by` line is required and
+the stipulations in the
+[Developer's Statement of Origin 1.1](https://developercertificate.org/) still
+apply.
