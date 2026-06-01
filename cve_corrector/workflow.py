@@ -383,10 +383,14 @@ def initialize_cve_workflow(
         logger.warning("Skipped %d devtool commit(s) during branch preparation", len(skipped))
 
     # Check if CVE is already fixed by an existing patch in the recipe
-    existing = run_cmd_capture(
-        ['git', 'log', '--grep', f'CVE: {cve_id}', '--format=%h %s',
-         'original-version'],
-        cwd=workspace_path)
+    # Exclude upstream history to avoid false positives when the full
+    # upstream repo is fetched (only devtool-applied patches matter).
+    log_cmd = ['git', 'log', '--grep', f'CVE: {cve_id}', '--format=%h %s',
+               'original-version']
+    remotes = run_cmd_capture(['git', 'remote'], cwd=workspace_path)
+    if 'upstream' in remotes.stdout:
+        log_cmd += ['--not', '--remotes=upstream']
+    existing = run_cmd_capture(log_cmd, cwd=workspace_path)
     if existing.stdout.strip():
         logger.info("CVE %s: already patched in recipe — %s",
                     cve_id, existing.stdout.strip().splitlines()[0])
