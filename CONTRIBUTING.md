@@ -120,23 +120,47 @@ https://www.linuxfoundation.org/legal/generative-ai
 All existing guidelines in this document are expected to be followed when
 contributing AI-generated changes, with these additional requirements:
 
-All AI Generated Code must be labeled as such in the commit message, prior to
-your `Signed-off-by` line. It is also strongly recommended that any patches or
-code within the commit have a comment or other indication that this code was AI
-generated.
+### Signed-off-by and Developer Certificate of Origin
 
-Example commit message:
+AI agents MUST NOT add `Signed-off-by` tags. Only humans can legally certify
+the Developer Certificate of Origin (DCO). The human submitter is responsible
+for:
+
+- Reviewing all AI-generated code
+- Ensuring compliance with licensing requirements
+- Adding their own `Signed-off-by` tag to certify the DCO
+- Taking full responsibility for the contribution
+
+### Attribution
+
+When AI tools contribute to development, proper attribution helps track the
+evolving role of AI in the development process. Contributions should include an
+`Assisted-by` tag in the commit message in the following format:
+
+```
+Assisted-by: AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]
+```
+
+Where:
+
+- `AGENT_NAME` is the name of the AI tool or framework
+- `MODEL_VERSION` is the specific model version used
+- `[TOOL1] [TOOL2]` are optional specialized analysis tools used
+  (e.g., coccinelle, sparse, smatch, clang-tidy)
+
+Basic development tools (git, gcc, make, editors) should not be listed.
+
+### Example commit message
 
 ```
 component: Add the ability to ...
 
-AI-Generated: Uses GitHub Copilot
+Assisted-by: Kiro:claude-sonnet-4-20250514
 
 Signed-off-by: Your Name <your.name@domain>
 ```
 
-The `Signed-off-by` line must be written by you, and not the AI helper. As a
-reminder, when contributing a change, your `Signed-off-by` line is required and
-the stipulations in the
+As a reminder, when contributing a change, your `Signed-off-by` line is
+required and the stipulations in the
 [Developer's Statement of Origin 1.1](https://developercertificate.org/) still
 apply.
