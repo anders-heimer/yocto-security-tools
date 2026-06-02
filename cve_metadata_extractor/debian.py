@@ -18,8 +18,14 @@ import requests
 from .config import load_config
 from .mirrors import ensure_data_repo
 from .sources import SOURCE_REGISTRY, CveSource
-from .utils import CVE_ID_RE, URL_RE, find_hash, process_pr_url, \
-    process_gitlab_issue_url, _GITLAB_ISSUE_RE
+from .utils import (
+    _GITLAB_ISSUE_RE,
+    CVE_ID_RE,
+    URL_RE,
+    find_hash,
+    process_gitlab_issue_url,
+    process_pr_url,
+)
 
 _cfg = load_config()
 SNAPSHOT_API = _cfg['snapshot_api']

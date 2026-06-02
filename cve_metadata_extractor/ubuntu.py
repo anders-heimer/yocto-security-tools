@@ -9,8 +9,14 @@ import requests
 
 from .config import load_config
 from .sources import SOURCE_REGISTRY, CveSource
-from .utils import URL_RE, find_hash, process_pr_url, \
-    process_gitlab_issue_url, tag_results, _GITLAB_ISSUE_RE
+from .utils import (
+    _GITLAB_ISSUE_RE,
+    URL_RE,
+    find_hash,
+    process_gitlab_issue_url,
+    process_pr_url,
+    tag_results,
+)
 
 _cfg = load_config()
 UBUNTU_API = _cfg.get('ubuntu_api', 'https://ubuntu.com')

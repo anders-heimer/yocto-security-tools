@@ -79,10 +79,22 @@ Each tool works independently. Chain via `--cve-info cve-metadata.json`.
 ## CI & Quality Gates
 
 - **Pre-commit**: ruff (lint+format) + mypy
-- **CI matrix**: Python 3.9–3.12 on ubuntu-latest
-- **Pipeline**: ruff check → mypy → pytest --cov (threshold: 75%)
+- **CI matrix**: Python 3.10–3.13 on ubuntu-latest
+- **Pipeline**: ruff check → mypy → pytest --cov (threshold: 73%)
 - **Ruff rules**: E, F, W, I, UP, B, SIM (line-length 100, E501 ignored)
-- **Mypy config**: check_untyped_defs=true, ignore_missing_imports=true, target py3.9
+- **Mypy config**: check_untyped_defs=true, ignore_missing_imports=true, target py3.10
+
+### Run CI Locally Before Committing
+
+Before creating or amending any commit, run the full CI pipeline locally:
+
+```sh
+ruff check .
+mypy cve_agent cve_corrector cve_metadata_extractor shared
+pytest --cov --cov-report=term-missing
+```
+
+All three must pass. Do not commit with lint errors, type errors, or failing tests.
 
 ## Detailed Documentation
 

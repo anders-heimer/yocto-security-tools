@@ -6,8 +6,14 @@ import logging
 
 from .mirrors import ensure_data_repo
 from .sources import SOURCE_REGISTRY, CveSource
-from .utils import find_cve_json_file, find_hash, process_pr_url, \
-    process_gitlab_issue_url, tag_results, _GITLAB_ISSUE_RE
+from .utils import (
+    _GITLAB_ISSUE_RE,
+    find_cve_json_file,
+    find_hash,
+    process_gitlab_issue_url,
+    process_pr_url,
+    tag_results,
+)
 
 
 def _process_references(refs, patch_links, hashes, series, references):

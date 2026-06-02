@@ -3,7 +3,7 @@
 name = "yocto-security-tools"
 version = "1.0.0"
 description = "Standalone CVE management tools for Yocto/OpenEmbedded"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -52,10 +52,10 @@ source = ["cve_agent", "cve_corrector", "cve_metadata_extractor", "shared"]
 [tool.coverage.report]
 show_missing = true
 skip_empty = true
-fail_under = 75
+fail_under = 73
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false

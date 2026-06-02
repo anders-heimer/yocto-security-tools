@@ -4,7 +4,13 @@
 from pathlib import Path
 from typing import Optional
 
-from .bitbake_ops import cleanup_workspace, find_mirror_repo, get_build_path, get_recipe_src_uri_git, get_upstream_check_uri
+from .bitbake_ops import (
+    cleanup_workspace,
+    find_mirror_repo,
+    get_build_path,
+    get_recipe_src_uri_git,
+    get_upstream_check_uri,
+)
 from .git_ops import checkout_version, copy_missing_files_from_devtool, deduce_repo_from_patches
 from .ptest import enable_ptest
 from .state import DevtoolError, GitError, MetadataError

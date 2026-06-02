@@ -6,9 +6,9 @@ import os
 import re
 
 from shared.url_parser import (  # noqa: F401
+    _GITLAB_ISSUE_RE,
     HASH_RE,
     IGNORED_URL_PATTERNS,
-    _GITLAB_ISSUE_RE,
     extract_commit_hash,
     fetch_github_pr_commits,
     fetch_gitlab_issue_commits,

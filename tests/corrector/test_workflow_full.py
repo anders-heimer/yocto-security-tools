@@ -352,6 +352,7 @@ class TestContinueFromConflict:
         mock_capture.return_value = MagicMock(stdout="")
         state = continue_from_conflict()
         assert state.cve_id == "CVE-1"
+        assert state.current_step == "cherry_pick_to_devtool"
 
     @patch("cve_corrector.workflow.run_cmd")
     @patch("cve_corrector.workflow.run_cmd_capture")

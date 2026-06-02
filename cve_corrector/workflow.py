@@ -1,6 +1,7 @@
 # Copyright (C) 2026 Ericsson AB
 # SPDX-License-Identifier: MIT
 """Main workflow functions for CVE corrector."""
+import contextlib
 import json
 import re
 from dataclasses import dataclass
@@ -68,10 +69,8 @@ def _kill_bitbake_server() -> None:
         pid = int(lockfile.read_text().strip())
         os.kill(pid, signal.SIGTERM)
         time.sleep(2)
-        try:
+        with contextlib.suppress(ProcessLookupError):
             os.kill(pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
     except (ValueError, ProcessLookupError, PermissionError, OSError):
         pass
     # Remove stale socket so fresh server starts cleanly
