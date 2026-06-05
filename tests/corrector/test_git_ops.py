@@ -38,6 +38,11 @@ def test_deduce_repo_sourceware():
     assert "sourceware.org/git/binutils-gdb.git" in result
 
 
+def test_deduce_repo_rejects_sourceware_lookalike_host():
+    url = "https://sourceware.org.evil.com/git/gitweb.cgi?p=binutils-gdb.git;a=commit;h=abc123"
+    assert deduce_repo_from_patches([url]) is None
+
+
 def test_deduce_repo_savannah_cgit():
     url = "https://git.savannah.gnu.org/cgit/grub.git/commit/?id=abc123"
     result = deduce_repo_from_patches([url])
@@ -48,6 +53,11 @@ def test_deduce_repo_savannah_git():
     url = "https://git.savannah.gnu.org/git/grub.git/commit/?id=abc123"
     result = deduce_repo_from_patches([url])
     assert "savannah.gnu.org/git/grub" in result
+
+
+def test_deduce_repo_rejects_savannah_lookalike_host():
+    url = "https://git.savannah.gnu.org.evil.com/cgit/grub.git/commit/?id=abc123"
+    assert deduce_repo_from_patches([url]) is None
 
 
 def test_deduce_repo_gitlab():

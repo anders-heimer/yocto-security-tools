@@ -214,6 +214,8 @@ def deduce_repo_from_patches(patches: list[str]) -> Optional[str]:
             host = parsed.hostname or ''
             if host == 'sourceware.org' or host.endswith('.sourceware.org'):
                 new_url = f'https://sourceware.org/git/{repo_name}'
+            elif 'sourceware.org' in host:
+                continue
             else:
                 new_url = f'{parsed.scheme}://{parsed.netloc}/{repo_name}'
         else:
@@ -228,6 +230,8 @@ def deduce_repo_from_patches(patches: list[str]) -> Optional[str]:
                 else:
                     continue
                 new_url = f'https://git.savannah.gnu.org/git/{repo_name}'
+            elif 'savannah.gnu.org' in host or 'git.savannah' in host:
+                continue
         skip_patterns = ("bugzilla", "viewtopic", "inbox.", "mail.python.org",
                          "openwall.com", "cve.org", "nvd.nist.gov",
                          "/archives/", "/advisories/", "/lists/",
